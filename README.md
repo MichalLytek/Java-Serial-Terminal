@@ -16,4 +16,4 @@ It's all in Java, using [Java Simple Serial Connector](https://github.com/scream
 
 Currently only in Polish - you can create a new branch and translate all hardcored strings by yourself.
 
-Or you can extend it and add multilanguage funcionality - don't forget to start a pull request then!
+Or you can extend it and add multilanguage functionality - don't forget to start a pull request then!
