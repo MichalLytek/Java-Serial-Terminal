@@ -194,7 +194,7 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="sendingScrollPane" alignment="0" max="32767" attributes="0"/>
                           <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace min="0" pref="594" max="32767" attributes="0"/>
+                              <EmptySpace min="0" pref="494" max="32767" attributes="0"/>
                               <Component id="cleanSendedButton" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="sendButton" min="-2" max="-2" attributes="0"/>
@@ -295,7 +295,7 @@
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace min="0" pref="685" max="32767" attributes="0"/>
+                              <EmptySpace min="0" pref="585" max="32767" attributes="0"/>
                               <Component id="cleanReceivedButton" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -309,7 +309,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="receivingScrollPane" pref="260" max="32767" attributes="0"/>
+                      <Component id="receivingScrollPane" pref="215" max="32767" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="cleanReceivedButton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>

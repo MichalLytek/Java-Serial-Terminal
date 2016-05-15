@@ -167,10 +167,17 @@ public class MainFrame extends javax.swing.JFrame {
     }
     
     private void packWindow() {
-        setMinimumSize(new Dimension(800, 600));
+        Dimension standardWindowSize = new Dimension(800, 600);
+        Dimension currentWindowSize = MainFrame.this.getBounds().getSize();
+        setMinimumSize(standardWindowSize);
         pack();
-        setMinimumSize(MainFrame.this.getBounds().getSize());
-//        pack();
+        Dimension packedWindowSize = MainFrame.this.getBounds().getSize();
+        setMinimumSize(packedWindowSize);
+        if (packedWindowSize.getWidth() > currentWindowSize.getWidth()) {
+            MainFrame.this.setSize(new Dimension((int)packedWindowSize.getWidth(), (int)currentWindowSize.getHeight()));
+        } else {
+            MainFrame.this.setSize(currentWindowSize);
+        }
     }
 
     /**
@@ -260,7 +267,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(upperPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(sendingScrollPane)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, upperPanelLayout.createSequentialGroup()
-                        .addGap(0, 594, Short.MAX_VALUE)
+                        .addGap(0, 494, Short.MAX_VALUE)
                         .addComponent(cleanSendedButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(sendButton))
@@ -313,7 +320,7 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(jLabel1)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bottomPanelLayout.createSequentialGroup()
-                        .addGap(0, 685, Short.MAX_VALUE)
+                        .addGap(0, 585, Short.MAX_VALUE)
                         .addComponent(cleanReceivedButton)))
                 .addContainerGap())
         );
@@ -323,7 +330,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(receivingScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE)
+                .addComponent(receivingScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(cleanReceivedButton)
                 .addContainerGap())
