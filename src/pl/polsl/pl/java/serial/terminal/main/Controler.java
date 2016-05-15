@@ -48,6 +48,7 @@ public class Controler {
     public Controler() {
         this.view = new MainFrame(this);
         
+        // prevent field be a nullpointer
         this.start_time = System.nanoTime();
         this.pingResult = -1;
     }

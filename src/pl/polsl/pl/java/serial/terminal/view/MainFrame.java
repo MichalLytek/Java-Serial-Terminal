@@ -2,6 +2,7 @@ package pl.polsl.pl.java.serial.terminal.view;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
@@ -13,16 +14,17 @@ import pl.polsl.pl.java.serial.terminal.main.Controler;
 import pl.polsl.pl.java.serial.terminal.view.helpers.DisableableTextPane;
 
 /**
- * Main GUI class.
+ * Main GUI class. 
  * Has menu bar with about connection commands
  * and two text areas with buttons to send and receive text.
- * 
+ *
  * @author Michał Lytek
  */
 public class MainFrame extends javax.swing.JFrame {
 
     /** Instance of controler class */
     private Controler controler;
+    
     /** Instance of configuration dialog */
     private ConfigurationDialog configurationDialog;
 
@@ -39,6 +41,15 @@ public class MainFrame extends javax.swing.JFrame {
         //setup system look & feel
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+
+            javax.swing.UIManager.getDefaults().entrySet().stream().map((entry) -> entry.getKey()).forEach((key) -> {
+                Object value = javax.swing.UIManager.get(key);
+                if (value != null && value instanceof javax.swing.plaf.FontUIResource) {
+                    javax.swing.plaf.FontUIResource fr = (javax.swing.plaf.FontUIResource) value;
+                    javax.swing.plaf.FontUIResource f = new javax.swing.plaf.FontUIResource("Tahoma", fr.getStyle(), 11);
+                    javax.swing.UIManager.put(key, f);
+                }
+            });
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
             System.err.println("Using the default look and feel.");
         }
@@ -68,12 +79,20 @@ public class MainFrame extends javax.swing.JFrame {
 
         receivingTextPane.setBackground(new Color(240, 240, 240));
         receivingTextPane.getCaret().setVisible(false);
+        
+        Font jLabel2Font = jLabel2.getFont();
+        jLabel2.setFont(jLabel2Font.deriveFont((float) (jLabel2Font.getSize() * 1.2)));
+        
+        Font jLabel1Font = jLabel1.getFont();
+        jLabel1.setFont(jLabel1Font.deriveFont((float) (jLabel1Font.getSize() * 1.2)));
+        
+        MainFrame.this.pack();
     }
 
     /**
      * Handle demands of presenting received text on screen.
      * Checks if the text should be placed in new line or not.
-     * 
+     *
      * @param receivedLine the string to insert in text area
      * @param insertInNewLine true if the line should be placed in new line, false if appended to te current text
      */
@@ -99,7 +118,7 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public void showConnectionParameters() {
         connectMenuItem.setEnabled(true);
-        
+
         portStatusLabel.setText("Nie połączono:");
         portNameLabel.setVisible(true);
         portNameLabel.setText(controler.getConnectedPortName());
@@ -109,12 +128,15 @@ public class MainFrame extends javax.swing.JFrame {
         terminatorLabel.setText(controler.getConnectedPortTerminator());
 
         connectionDetailsPanel.setVisible(true);
+        
+        MainFrame.this.pack();
+        MainFrame.this.setLocationRelativeTo(null);
     }
-    
+
     /**
      * Handle demand of showing connection test result.
      * It shows dialog with information about test.
-     * 
+     *
      * @param isSuccesful true if test was ok, false if there was an error or timeout
      * @param pingResult the round trip delay time in ms - ignored if isSuccesful is false
      */
@@ -122,7 +144,7 @@ public class MainFrame extends javax.swing.JFrame {
         if (isSuccesful) {
             JOptionPane.showOptionDialog(this,
                     "Test łącza zakończony sukcesem!\n"
-                            + "Czas \"round trip delay\": " + pingResult + " ms.",
+                    + "Czas \"round trip delay\": " + pingResult + " ms.",
                     "Test łącza",
                     JOptionPane.PLAIN_MESSAGE,
                     JOptionPane.INFORMATION_MESSAGE,
@@ -133,7 +155,7 @@ public class MainFrame extends javax.swing.JFrame {
         } else {
             JOptionPane.showOptionDialog(this,
                     "Test łącza zakończony niepowodzeniem!\n"
-                            + "Sprawdź czy urządzenie podpięte jest poprawnie.",
+                    + "Sprawdź czy urządzenie podpięte jest poprawnie.",
                     "Test łącza",
                     JOptionPane.PLAIN_MESSAGE,
                     JOptionPane.ERROR_MESSAGE,
@@ -199,7 +221,6 @@ public class MainFrame extends javax.swing.JFrame {
         MainSplitPane.setDividerLocation(200);
         MainSplitPane.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel2.setText("Nadawanie:");
 
         sendingScrollPane.setViewportView(sendingTextPane);
@@ -245,7 +266,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(sendingScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)
+                .addComponent(sendingScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(upperPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(sendButton)
@@ -257,7 +278,6 @@ public class MainFrame extends javax.swing.JFrame {
 
         bottomPanel.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(204, 204, 204)));
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel1.setText("Odbieranie:");
 
         receivingTextPane.setDisabledTextColor(new java.awt.Color(0, 0, 0));
@@ -294,7 +314,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(receivingScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE)
+                .addComponent(receivingScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(cleanReceivedButton)
                 .addContainerGap())
@@ -488,7 +508,7 @@ public class MainFrame extends javax.swing.JFrame {
     /**
      * Handle clean sended text area button pressing.
      * Cleans up a sending text area.
-     * 
+     *
      * @param evt is ignored
      */
     private void cleanSendedButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cleanSendedButtonActionPerformed
@@ -499,7 +519,7 @@ public class MainFrame extends javax.swing.JFrame {
      * Handle sending button pressing.
      * Load text from sending text area and send it to controler.
      * If text wasn't sended ok, it shows error dialog message.
-     * 
+     *
      * @param evt is ignored
      */
     private void sendButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendButtonActionPerformed
@@ -509,23 +529,23 @@ public class MainFrame extends javax.swing.JFrame {
                 sendingTextPane.setText(null);
             } else {
                 JOptionPane.showOptionDialog(this,
-                    "Nie można wysłać wiadomości!\n"
-                            + "Sprawdź czy połączenie nie uległo uszkodzeniu.",
-                    "Błąd wysyłania",
-                    JOptionPane.PLAIN_MESSAGE,
-                    JOptionPane.ERROR_MESSAGE,
-                    null,
-                    null,
-                    null
+                        "Nie można wysłać wiadomości!\n"
+                        + "Sprawdź czy połączenie nie uległo uszkodzeniu.",
+                        "Błąd wysyłania",
+                        JOptionPane.PLAIN_MESSAGE,
+                        JOptionPane.ERROR_MESSAGE,
+                        null,
+                        null,
+                        null
                 );
             }
         }
     }//GEN-LAST:event_sendButtonActionPerformed
 
     /**
-     * Handle cleaning received text area button pressing.
-     * It cleans received text area.
-     * 
+     * Handle cleaning received text area button pressing. It cleans received
+     * text area.
+     *
      * @param evt is ignored
      */
     private void cleanReceivedButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cleanReceivedButtonActionPerformed
@@ -535,9 +555,9 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_cleanReceivedButtonActionPerformed
 
     /**
-     * Handle exit demand from menu.
-     * It dispose all windows and close the program.
-     * 
+     * Handle exit demand from menu. It dispose all windows and close the
+     * program.
+     *
      * @param evt is ignored
      */
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
@@ -546,9 +566,9 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
     /**
-     * Handle port configuration demad from menu.
-     * Shows modal dialog to setup connection parameters.
-     * 
+     * Handle port configuration demad from menu. Shows modal dialog to setup
+     * connection parameters.
+     *
      * @param evt is ignored
      */
     private void portConfigurationMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_portConfigurationMenuItemActionPerformed
@@ -557,9 +577,9 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_portConfigurationMenuItemActionPerformed
 
     /**
-     * Handle show about infor from menu.
-     * It shows dialog with infos about program author.
-     * 
+     * Handle show about infor from menu. It shows dialog with infos about
+     * program author.
+     *
      * @param evt is ignored
      */
     private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
@@ -576,15 +596,13 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_aboutMenuItemActionPerformed
 
     /**
-     * Handle disconenct request from menu.
-     * It send request to controler
-     * and if was succesful, it disables and reenables menu items,
-     * but if not, it shows error dialog message.
-     * 
+     * Handle disconenct request from menu. It send request to controler and if
+     * was succesful, it disables and reenables menu items, but if not, it shows
+     * error dialog message.
+     *
      * @param evt is ignored
      */
     private void disconnectMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_disconnectMenuItemActionPerformed
-//        connectionDetailsPanel.setVisible(false);
         if (controler.disconnectFromPort()) {
             connectionStatusIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pl/polsl/pl/java/serial/terminal/view/images/red_circle.png")));
 
@@ -612,15 +630,13 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_disconnectMenuItemActionPerformed
 
     /**
-     * Handle connect request from menu.
-     * It send demand to controler
-     * and if was succesful, it disables and reenables menu items,
-     * but if not, it shows error dialog message.
-     * 
+     * Handle connect request from menu. It send demand to controler and if was
+     * succesful, it disables and reenables menu items, but if not, it shows
+     * error dialog message.
+     *
      * @param evt is ignored
      */
     private void connectMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectMenuItemActionPerformed
-//        connectionDetailsPanel.setVisible(true);
         portStatusLabel.setText("Trwa łączenie...");
         portStatusLabel.validate();
         if (controler.connectToPort()) {
@@ -652,7 +668,7 @@ public class MainFrame extends javax.swing.JFrame {
     /**
      * Handle connection test request from menu.
      * It send the demand to controler.
-     * 
+     *
      * @param evt is ignored
      */
     private void testConnectionMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_testConnectionMenuItemActionPerformed
