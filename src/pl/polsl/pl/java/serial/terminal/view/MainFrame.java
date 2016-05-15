@@ -3,6 +3,7 @@ package pl.polsl.pl.java.serial.terminal.view;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Rectangle;
 
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
@@ -56,8 +57,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         initComponents();
         postInitComponents();
-
-        MainFrame.this.setLocationRelativeTo(null);
+        
         MainFrame.this.setVisible(true);
     }
 
@@ -86,7 +86,8 @@ public class MainFrame extends javax.swing.JFrame {
         Font jLabel1Font = jLabel1.getFont();
         jLabel1.setFont(jLabel1Font.deriveFont((float) (jLabel1Font.getSize() * 1.2)));
         
-        MainFrame.this.pack();
+        packWindow();
+        MainFrame.this.setLocationRelativeTo(null);
     }
 
     /**
@@ -129,8 +130,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         connectionDetailsPanel.setVisible(true);
         
-        MainFrame.this.pack();
-        MainFrame.this.setLocationRelativeTo(null);
+        packWindow();
     }
 
     /**
@@ -164,6 +164,13 @@ public class MainFrame extends javax.swing.JFrame {
                     null
             );
         }
+    }
+    
+    private void packWindow() {
+        setMinimumSize(new Dimension(800, 600));
+        pack();
+        setMinimumSize(MainFrame.this.getBounds().getSize());
+//        pack();
     }
 
     /**
@@ -221,6 +228,8 @@ public class MainFrame extends javax.swing.JFrame {
         MainSplitPane.setDividerLocation(200);
         MainSplitPane.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
+        upperPanel.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(204, 204, 204)));
+
         jLabel2.setText("Nadawanie:");
 
         sendingScrollPane.setViewportView(sendingTextPane);
@@ -266,7 +275,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(sendingScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE)
+                .addComponent(sendingScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(upperPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(sendButton)
@@ -276,7 +285,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         MainSplitPane.setTopComponent(upperPanel);
 
-        bottomPanel.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(204, 204, 204)));
+        bottomPanel.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(204, 204, 204)));
 
         jLabel1.setText("Odbieranie:");
 
@@ -314,15 +323,13 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(receivingScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
+                .addComponent(receivingScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(cleanReceivedButton)
                 .addContainerGap())
         );
 
         MainSplitPane.setRightComponent(bottomPanel);
-
-        statusBarPanel.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 0, 0, new java.awt.Color(153, 153, 153)));
 
         portStatusLabel.setText("Połączono:");
 
@@ -498,7 +505,7 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(MainSplitPane)
                 .addGap(0, 0, 0)
-                .addComponent(statusBarPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(statusBarPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0))
         );
 
