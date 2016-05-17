@@ -45,11 +45,26 @@ public class ConfigurationDialog extends javax.swing.JDialog {
     }
     
     /**
+     * Loads port list from controler and check if it's not empty before updating combobox.
+     */
+    private void setupPortsComboBox() {
+        String[] avaiablePorts = controler.getAvaiablePortsNames();
+        
+        if (avaiablePorts.length == 0) {
+            portComboBox.setModel(new DefaultComboBoxModel(new String[] {"Brak dostępnych portów"}));
+            saveButton.setEnabled(false);
+        } else {
+            portComboBox.setModel(new DefaultComboBoxModel(avaiablePorts));
+            saveButton.setEnabled(true);
+        }
+    }
+    
+    /**
      * Custom field setup after Designer generated code initalization.
      */
     private void postInitComponents() {
-        portComboBox.setModel(new DefaultComboBoxModel(controler.getAvaiablePortsNames()));
-
+        setupPortsComboBox();
+        
         customTerminatorTextField.setEditable(false);
         customTerminatorTextField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -294,7 +309,7 @@ public class ConfigurationDialog extends javax.swing.JDialog {
      * @param evt is ignored
      */
     private void refreshAvaiablePortsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshAvaiablePortsButtonActionPerformed
-        portComboBox.setModel(new DefaultComboBoxModel(controler.getAvaiablePortsNames()));
+       setupPortsComboBox();
     }//GEN-LAST:event_refreshAvaiablePortsButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

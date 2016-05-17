@@ -77,7 +77,7 @@
                  classname="net.sf.launch4j.ant.Launch4jTask"
                  classpath="${launch4jexe.dir}/launch4j.jar
                 :${launch4jexe.dir}/lib/xstream.jar" />
-        <property name="launch4j.jar.name" value="MyAppJarName"/>
+        <property name="launch4j.jar.name" value="Java Serial Terminal"/>
         <property name="launch4j.dir" value="exe"/>
         <property name="launch4j.jar" value="${launch4j.dir}/${launch4j.jar.name}.jar"/>
         <echo message="Packaging ${application.title} into a single JAR at ${launch4j.jar}"/>
@@ -96,5 +96,32 @@
         </zip>
         <delete file="${launch4j.dir}/temp_final.jar"/>
         <launch4j configFile="misc/l4j.xml" />
+    </target>
+    
+    <target name="windows-jar-launcher" depends="clean,compile,jar">
+        <property name="launch4jexe.dir" location="C:\Program Files (x86)\Launch4j" />
+        <taskdef name="launch4j"
+                 classname="net.sf.launch4j.ant.Launch4jTask"
+                 classpath="${launch4jexe.dir}/launch4j.jar
+                :${launch4jexe.dir}/lib/xstream.jar" />
+        <property name="launch4j.jar.name" value="Java Serial Terminal"/>
+        <property name="launch4j.dir" value="exe"/>
+        <property name="launch4j.jar" value="${launch4j.dir}/${launch4j.jar.name}.jar"/>
+        <echo message="Packaging ${application.title} into a single JAR at ${launch4j.jar}"/>
+        <delete dir="${launch4j.dir}"/>
+        <mkdir dir="${launch4j.dir}"/>
+        <jar destfile="${launch4j.dir}/temp_final.jar" filesetmanifest="skip">
+            <zipgroupfileset dir="dist" includes="*.jar"/>
+            <zipgroupfileset dir="dist/lib" includes="*.jar"/>
+            <manifest>
+            <attribute name="Main-Class" value="${main.class}"/>
+            </manifest>
+        </jar>
+        <zip destfile="${launch4j.jar}">
+            <zipfileset src="${launch4j.dir}/temp_final.jar"
+                excludes="META-INF/*.SF, META-INF/*.DSA, META-INF/*.RSA"/>
+        </zip>
+        <delete file="${launch4j.dir}/temp_final.jar"/>
+        <launch4j configFile="misc/l4j_launch.xml" />
     </target>
 </project>
