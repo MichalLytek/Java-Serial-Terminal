@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
@@ -91,8 +93,11 @@ public class MainFrame extends javax.swing.JFrame {
         packWindow();
         MainFrame.this.setLocationRelativeTo(null);
         
-        Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/pl/polsl/pl/java/serial/terminal/view/images/icon.png"));
-        setIconImage(image);
+        final List<Image> icons = new ArrayList<>();
+        icons.add(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/pl/polsl/pl/java/serial/terminal/view/images/icon-16.png")));
+        icons.add(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/pl/polsl/pl/java/serial/terminal/view/images/icon-32.png")));
+        icons.add(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/pl/polsl/pl/java/serial/terminal/view/images/icon-64.png")));
+        setIconImages(icons);
     }
 
     /**
