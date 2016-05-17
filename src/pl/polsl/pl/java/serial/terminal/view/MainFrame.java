@@ -3,7 +3,9 @@ package pl.polsl.pl.java.serial.terminal.view;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
 
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
@@ -88,6 +90,9 @@ public class MainFrame extends javax.swing.JFrame {
         
         packWindow();
         MainFrame.this.setLocationRelativeTo(null);
+        
+        Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/pl/polsl/pl/java/serial/terminal/view/images/icon.png"));
+        setIconImage(image);
     }
 
     /**
