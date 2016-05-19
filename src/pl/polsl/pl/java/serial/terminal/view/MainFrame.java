@@ -197,7 +197,9 @@ public class MainFrame extends JFrame {
         
         // limit the size of textpane - window.pack() bug
         receivingScrollPane.setMaximumSize(this.receivingSize);
+        receivingScrollPane.setPreferredSize(this.receivingSize);
         sendingScrollPane.setMaximumSize(this.sendingSize);
+        sendingScrollPane.setPreferredSize(this.sendingSize);
         
         // set minimum window size to prevent window collapse on pack()
         window.setMinimumSize(standardWindowSize);
@@ -208,7 +210,7 @@ public class MainFrame extends JFrame {
         receivingScrollPane.setMaximumSize(DimMax);
         sendingScrollPane.setMaximumSize(DimMax);
         
-        // set packed window size as maximum - prevent cutting of labels by window resize
+        // set packed window size as minimum - prevent cutting of labels by window resize
         Dimension packedWindowSize = MainFrame.this.getBounds().getSize();
         window.setMinimumSize(packedWindowSize);
 
