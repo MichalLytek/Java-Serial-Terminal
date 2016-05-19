@@ -1,6 +1,6 @@
 package pl.polsl.pl.java.serial.terminal.main;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -211,9 +211,9 @@ public class Controler {
         for (String command : commandLines) {
             String textToSend = command + terminatorToInsert;
             try {
-                byte[] sendedChars = textToSend.getBytes("UTF-8");
+                byte[] sendedChars = textToSend.getBytes(StandardCharsets.US_ASCII);
                 serialPort.writeBytes(sendedChars);
-            } catch (UnsupportedEncodingException | SerialPortException ex) {
+            } catch (SerialPortException ex) {
                 System.err.println(ex);
                 return false;
             }

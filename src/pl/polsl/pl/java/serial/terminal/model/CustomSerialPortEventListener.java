@@ -1,6 +1,6 @@
 package pl.polsl.pl.java.serial.terminal.model;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,7 +94,7 @@ public class CustomSerialPortEventListener implements SerialPortEventListener {
                                     array[i++] = current;
                                 }
                                 byteBufferList.clear();
-                                String receivedText = new String(array, "UTF-8");
+                                String receivedText = new String(array, StandardCharsets.US_ASCII);
                                 controler.receivedNewLine(receivedText);
 //                                switch (receivedText) {
 //                                    case "*PING":
@@ -116,7 +116,7 @@ public class CustomSerialPortEventListener implements SerialPortEventListener {
                         }
                     }
                 }
-            } catch (UnsupportedEncodingException | SerialPortException ex) {
+            } catch (SerialPortException ex) {
                 System.err.println(ex);
             }
         }
