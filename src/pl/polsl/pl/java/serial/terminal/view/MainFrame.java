@@ -4,11 +4,12 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
-import java.awt.Rectangle;
 import java.awt.Toolkit;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -25,13 +26,19 @@ import pl.polsl.pl.java.serial.terminal.view.helpers.DisableableTextPane;
  *
  * @author Michał Lytek
  */
-public class MainFrame extends javax.swing.JFrame {
+public class MainFrame extends JFrame {
 
     /** Instance of controler class */
     private Controler controler;
-    
     /** Instance of configuration dialog */
     private ConfigurationDialog configurationDialog;
+    /** Reference to this object for semantic convenience */
+    private JFrame window = MainFrame.this;
+    
+    /** Default minimum receiving textarea size */
+    private Dimension receivingSize;
+    /** Default minimum receiving textarea size */
+    private Dimension sendingSize;
 
     /**
      * Creates new main GUI form.
@@ -71,6 +78,9 @@ public class MainFrame extends javax.swing.JFrame {
     private void postInitComponents() {
         upperPanel.setMinimumSize(new Dimension(500, 100));
         bottomPanel.setMinimumSize(new Dimension(500, 200));
+        
+        receivingSize = receivingScrollPane.getBounds().getSize();
+        sendingSize = sendingScrollPane.getBounds().getSize();
 
         connectionDetailsPanel.setVisible(false);
 
@@ -176,17 +186,38 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * Recalculate window dimmension and min dimension,
+     * apply new window size when it's needed due to content oversize.
+     */
     private void packWindow() {
+        // get standard and current window size
         Dimension standardWindowSize = new Dimension(800, 600);
         Dimension currentWindowSize = MainFrame.this.getBounds().getSize();
-        setMinimumSize(standardWindowSize);
-        pack();
+        
+        // limit the size of textpane - window.pack() bug
+        receivingScrollPane.setMaximumSize(this.receivingSize);
+        sendingScrollPane.setMaximumSize(this.sendingSize);
+        
+        // set minimum window size to prevent window collapse on pack()
+        window.setMinimumSize(standardWindowSize);
+        window.pack();
+        
+        // set maximum size to maximum to revert changes
+        final Dimension DimMax = Toolkit.getDefaultToolkit().getScreenSize();
+        receivingScrollPane.setMaximumSize(DimMax);
+        sendingScrollPane.setMaximumSize(DimMax);
+        
+        // set packed window size as maximum - prevent cutting of labels by window resize
         Dimension packedWindowSize = MainFrame.this.getBounds().getSize();
-        setMinimumSize(packedWindowSize);
+        window.setMinimumSize(packedWindowSize);
+
+        // resize window if minimum size is bigger than current
         if (packedWindowSize.getWidth() > currentWindowSize.getWidth()) {
-            MainFrame.this.setSize(new Dimension((int)packedWindowSize.getWidth(), (int)currentWindowSize.getHeight()));
+            window.setSize(packedWindowSize);
         } else {
-            MainFrame.this.setSize(currentWindowSize);
+            // restore window size after window.pack()
+            window.setSize(currentWindowSize);
         }
     }
 
