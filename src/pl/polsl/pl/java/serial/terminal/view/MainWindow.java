@@ -1,6 +1,7 @@
 package pl.polsl.pl.java.serial.terminal.view;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
@@ -11,13 +12,13 @@ import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollBar;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.StyledDocument;
 
 import pl.polsl.pl.java.serial.terminal.main.Controler;
-import pl.polsl.pl.java.serial.terminal.view.helpers.DisableableTextPane;
 
 /**
  * Main GUI class. 
@@ -26,14 +27,14 @@ import pl.polsl.pl.java.serial.terminal.view.helpers.DisableableTextPane;
  *
  * @author Michał Lytek
  */
-public class MainFrame extends JFrame {
+public class MainWindow extends JFrame {
 
     /** Instance of controler class */
     private Controler controler;
     /** Instance of configuration dialog */
     private ConfigurationDialog configurationDialog;
     /** Reference to this object for semantic convenience */
-    private JFrame window = MainFrame.this;
+    private JFrame window = MainWindow.this;
     
     /** Default minimum receiving textarea size */
     private Dimension receivingSize;
@@ -46,7 +47,7 @@ public class MainFrame extends JFrame {
      *
      * @param controler instance of controler which will be handling GUI request
      */
-    public MainFrame(Controler controler) {
+    public MainWindow(Controler controler) {
         this.controler = controler;
         this.configurationDialog = new ConfigurationDialog(this, true, controler);
 
@@ -69,7 +70,7 @@ public class MainFrame extends JFrame {
         initComponents();
         postInitComponents();
         
-        MainFrame.this.setVisible(true);
+        MainWindow.this.setVisible(true);
     }
 
     /**
@@ -92,7 +93,8 @@ public class MainFrame extends JFrame {
         portNameLabel.setVisible(false);
 
         receivingTextPane.setBackground(new Color(240, 240, 240));
-        receivingTextPane.getCaret().setVisible(false);
+        receivingTextPane.setEditable(false);
+        receivingTextPane.setCursor(new Cursor(Cursor.TEXT_CURSOR));
         
         Font jLabel2Font = jLabel2.getFont();
         jLabel2.setFont(jLabel2Font.deriveFont((float) (jLabel2Font.getSize() * 1.2)));
@@ -101,7 +103,7 @@ public class MainFrame extends JFrame {
         jLabel1.setFont(jLabel1Font.deriveFont((float) (jLabel1Font.getSize() * 1.2)));
         
         packWindow();
-        MainFrame.this.setLocationRelativeTo(null);
+        MainWindow.this.setLocationRelativeTo(null);
         
         final List<Image> icons = new ArrayList<>();
         icons.add(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/pl/polsl/pl/java/serial/terminal/view/images/icon-16.png")));
@@ -118,7 +120,6 @@ public class MainFrame extends JFrame {
      * @param insertInNewLine true if the line should be placed in new line, false if appended to te current text
      */
     public void insertReceivedText(String receivedLine, boolean insertInNewLine) {
-        ((DisableableTextPane) receivingTextPane).setWritable(true);
         StyledDocument receivingDocument = receivingTextPane.getStyledDocument();
         try {
             if (receivingTextPane.getText().length() == 0 || !insertInNewLine) {
@@ -130,7 +131,9 @@ public class MainFrame extends JFrame {
         } catch (BadLocationException ex) {
             System.err.println(ex);
         }
-        ((DisableableTextPane) receivingTextPane).setWritable(false);
+        
+        JScrollBar sb = receivingScrollPane.getVerticalScrollBar();
+        sb.setValue(sb.getMaximum());
     }
 
     /**
@@ -193,7 +196,7 @@ public class MainFrame extends JFrame {
     private void packWindow() {
         // get standard and current window size
         Dimension standardWindowSize = new Dimension(800, 600);
-        Dimension currentWindowSize = MainFrame.this.getBounds().getSize();
+        Dimension currentWindowSize = MainWindow.this.getBounds().getSize();
         
         // limit the size of textpane - window.pack() bug
         receivingScrollPane.setMaximumSize(this.receivingSize);
@@ -211,7 +214,7 @@ public class MainFrame extends JFrame {
         sendingScrollPane.setMaximumSize(DimMax);
         
         // set packed window size as minimum - prevent cutting of labels by window resize
-        Dimension packedWindowSize = MainFrame.this.getBounds().getSize();
+        Dimension packedWindowSize = MainWindow.this.getBounds().getSize();
         window.setMinimumSize(packedWindowSize);
 
         // resize window if minimum size is bigger than current
@@ -242,7 +245,7 @@ public class MainFrame extends JFrame {
         bottomPanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         receivingScrollPane = new javax.swing.JScrollPane();
-        receivingTextPane = new DisableableTextPane();
+        receivingTextPane = new javax.swing.JTextPane();
         cleanReceivedButton = new javax.swing.JButton();
         statusBarPanel = new javax.swing.JPanel();
         portStatusLabel = new javax.swing.JLabel();
@@ -600,20 +603,18 @@ public class MainFrame extends JFrame {
     }//GEN-LAST:event_sendButtonActionPerformed
 
     /**
-     * Handle cleaning received text area button pressing. It cleans received
-     * text area.
+     * Handle cleaning received text area button pressing.
+     * It cleans received text area.
      *
      * @param evt is ignored
      */
     private void cleanReceivedButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cleanReceivedButtonActionPerformed
-        ((DisableableTextPane) receivingTextPane).setWritable(true);
         receivingTextPane.setText(null);
-        ((DisableableTextPane) receivingTextPane).setWritable(false);
     }//GEN-LAST:event_cleanReceivedButtonActionPerformed
 
     /**
-     * Handle exit demand from menu. It dispose all windows and close the
-     * program.
+     * Handle exit demand from menu.
+     * It dispose all windows and close the program.
      *
      * @param evt is ignored
      */
@@ -623,8 +624,8 @@ public class MainFrame extends JFrame {
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
     /**
-     * Handle port configuration demad from menu. Shows modal dialog to setup
-     * connection parameters.
+     * Handle port configuration demad from menu.
+     * Shows modal dialog to setup connection parameters.
      *
      * @param evt is ignored
      */
@@ -634,8 +635,8 @@ public class MainFrame extends JFrame {
     }//GEN-LAST:event_portConfigurationMenuItemActionPerformed
 
     /**
-     * Handle show about infor from menu. It shows dialog with infos about
-     * program author.
+     * Handle show about infor from menu.
+     * It shows dialog with infos about program author.
      *
      * @param evt is ignored
      */
@@ -653,9 +654,10 @@ public class MainFrame extends JFrame {
     }//GEN-LAST:event_aboutMenuItemActionPerformed
 
     /**
-     * Handle disconenct request from menu. It send request to controler and if
-     * was succesful, it disables and reenables menu items, but if not, it shows
-     * error dialog message.
+     * Handle disconenct request from menu.
+     * It send request to controler and if was succesful,
+     * it disables and reenables menu items,
+     * but if not, it shows error dialog message.
      *
      * @param evt is ignored
      */
@@ -687,9 +689,10 @@ public class MainFrame extends JFrame {
     }//GEN-LAST:event_disconnectMenuItemActionPerformed
 
     /**
-     * Handle connect request from menu. It send demand to controler and if was
-     * succesful, it disables and reenables menu items, but if not, it shows
-     * error dialog message.
+     * Handle connect request from menu.
+     * It send demand to controler
+     * and if was succesful, it disables and reenables menu items,
+     * but if not, it shows error dialog message.
      *
      * @param evt is ignored
      */

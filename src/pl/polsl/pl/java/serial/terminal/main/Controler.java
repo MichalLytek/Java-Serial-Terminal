@@ -10,7 +10,7 @@ import jssc.SerialPortException;
 import jssc.SerialPortList;
 
 import pl.polsl.pl.java.serial.terminal.model.CustomSerialPortEventListener;
-import pl.polsl.pl.java.serial.terminal.view.MainFrame;
+import pl.polsl.pl.java.serial.terminal.view.MainWindow;
 
 /**
  * The most important class in the app, controls all logic.
@@ -22,7 +22,7 @@ import pl.polsl.pl.java.serial.terminal.view.MainFrame;
 public class Controler {
 
     /** Instance of GUI class */
-    private MainFrame view;
+    private MainWindow view;
     /** Instance of serial port */
     private SerialPort serialPort;
     
@@ -46,7 +46,7 @@ public class Controler {
      * Creates the controler, initates the GUI and ping test fields.
      */
     public Controler() {
-        this.view = new MainFrame(this);
+        this.view = new MainWindow(this);
         
         // prevent field be a nullpointer
         this.start_time = System.nanoTime();
