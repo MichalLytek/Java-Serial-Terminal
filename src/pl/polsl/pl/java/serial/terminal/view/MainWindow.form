@@ -194,7 +194,14 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="sendingScrollPane" alignment="0" max="32767" attributes="0"/>
                           <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace min="0" pref="494" max="32767" attributes="0"/>
+                              <Component id="dtrButton" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="rtsButton" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
+                              <Component id="dsrButton" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="ctsButton" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace pref="320" max="32767" attributes="0"/>
                               <Component id="cleanSendedButton" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="sendButton" min="-2" max="-2" attributes="0"/>
@@ -219,6 +226,10 @@
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="sendButton" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="cleanSendedButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="rtsButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="dtrButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="dsrButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="ctsButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                   </Group>
@@ -264,6 +275,48 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cleanSendedButtonActionPerformed"/>
               </Events>
+            </Component>
+            <Component class="javax.swing.JToggleButton" name="dtrButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="DTR"/>
+                <Property name="enabled" type="boolean" value="false"/>
+                <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
+                  <Insets value="[2, 6, 2, 6]"/>
+                </Property>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="dtrButtonActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JToggleButton" name="rtsButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="RTS"/>
+                <Property name="enabled" type="boolean" value="false"/>
+                <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
+                  <Insets value="[2, 6, 2, 6]"/>
+                </Property>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rtsButtonActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="dsrButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="DSR"/>
+                <Property name="enabled" type="boolean" value="false"/>
+                <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
+                  <Insets value="[2, 6, 2, 6]"/>
+                </Property>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="ctsButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="CTS"/>
+                <Property name="enabled" type="boolean" value="false"/>
+                <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
+                  <Insets value="[2, 6, 2, 6]"/>
+                </Property>
+              </Properties>
             </Component>
           </SubComponents>
         </Container>

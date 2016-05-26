@@ -225,6 +225,26 @@ public class MainWindow extends JFrame {
             window.setSize(currentWindowSize);
         }
     }
+    
+    public void setDSR(boolean dsrState) {
+        if (!dsrState) {
+            dsrButton.setBackground(new Color(0x00AA00));
+            dsrButton.setForeground(new Color(0x00AA00));
+        } else {
+            dsrButton.setBackground(new Color(0xAA0000));
+            dsrButton.setForeground(new Color(0xAA0000));
+        }
+    }
+    
+    public void setCTS(boolean ctsState) {
+        if (!ctsState) {
+            ctsButton.setBackground(new Color(0x00AA00));
+            ctsButton.setForeground(new Color(0x00AA00));
+        } else {
+            ctsButton.setBackground(new Color(0xAA0000));
+            ctsButton.setForeground(new Color(0xAA0000));
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -242,6 +262,10 @@ public class MainWindow extends JFrame {
         sendingTextPane = new javax.swing.JTextPane();
         sendButton = new javax.swing.JButton();
         cleanSendedButton = new javax.swing.JButton();
+        dtrButton = new javax.swing.JToggleButton();
+        rtsButton = new javax.swing.JToggleButton();
+        dsrButton = new javax.swing.JButton();
+        ctsButton = new javax.swing.JButton();
         bottomPanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         receivingScrollPane = new javax.swing.JScrollPane();
@@ -304,6 +328,32 @@ public class MainWindow extends JFrame {
             }
         });
 
+        dtrButton.setText("DTR");
+        dtrButton.setEnabled(false);
+        dtrButton.setMargin(new java.awt.Insets(2, 6, 2, 6));
+        dtrButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dtrButtonActionPerformed(evt);
+            }
+        });
+
+        rtsButton.setText("RTS");
+        rtsButton.setEnabled(false);
+        rtsButton.setMargin(new java.awt.Insets(2, 6, 2, 6));
+        rtsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rtsButtonActionPerformed(evt);
+            }
+        });
+
+        dsrButton.setText("DSR");
+        dsrButton.setEnabled(false);
+        dsrButton.setMargin(new java.awt.Insets(2, 6, 2, 6));
+
+        ctsButton.setText("CTS");
+        ctsButton.setEnabled(false);
+        ctsButton.setMargin(new java.awt.Insets(2, 6, 2, 6));
+
         javax.swing.GroupLayout upperPanelLayout = new javax.swing.GroupLayout(upperPanel);
         upperPanel.setLayout(upperPanelLayout);
         upperPanelLayout.setHorizontalGroup(
@@ -313,7 +363,14 @@ public class MainWindow extends JFrame {
                 .addGroup(upperPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(sendingScrollPane)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, upperPanelLayout.createSequentialGroup()
-                        .addGap(0, 494, Short.MAX_VALUE)
+                        .addComponent(dtrButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(rtsButton)
+                        .addGap(18, 18, 18)
+                        .addComponent(dsrButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(ctsButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 320, Short.MAX_VALUE)
                         .addComponent(cleanSendedButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(sendButton))
@@ -332,7 +389,11 @@ public class MainWindow extends JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(upperPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(sendButton)
-                    .addComponent(cleanSendedButton))
+                    .addComponent(cleanSendedButton)
+                    .addComponent(rtsButton)
+                    .addComponent(dtrButton)
+                    .addComponent(dsrButton)
+                    .addComponent(ctsButton))
                 .addGap(6, 6, 6))
         );
 
@@ -673,6 +734,9 @@ public class MainWindow extends JFrame {
             portStatusLabel.setText("Nie połączono:");
 
             sendButton.setEnabled(false);
+            
+            dtrButton.setEnabled(false);
+            rtsButton.setEnabled(false);   
         } else {
             JOptionPane.showOptionDialog(this,
                     "Nie można rozłączyć się z wybranym portem!\n"
@@ -710,6 +774,12 @@ public class MainWindow extends JFrame {
             portStatusLabel.setText("Połączono:");
 
             sendButton.setEnabled(true);
+            
+            dtrButton.setEnabled(true);
+            rtsButton.setEnabled(true); 
+            
+            controler.showCTS();
+            controler.showDSR();
         } else {
             portStatusLabel.setText("Nie połączono");
             JOptionPane.showOptionDialog(this,
@@ -735,6 +805,16 @@ public class MainWindow extends JFrame {
         controler.testConnection();
     }//GEN-LAST:event_testConnectionMenuItemActionPerformed
 
+    private void dtrButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dtrButtonActionPerformed
+        controler.setDTR(!dtrButton.isSelected());
+        sendingTextPane.requestFocus();
+    }//GEN-LAST:event_dtrButtonActionPerformed
+
+    private void rtsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rtsButtonActionPerformed
+        controler.setRTS(!rtsButton.isSelected());
+        sendingTextPane.requestFocus();
+    }//GEN-LAST:event_rtsButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JSplitPane MainSplitPane;
     private javax.swing.JMenuItem aboutMenuItem;
@@ -745,7 +825,10 @@ public class MainWindow extends JFrame {
     private javax.swing.JPanel connectionDetailsPanel;
     private javax.swing.JMenu connectionMenu;
     private javax.swing.JLabel connectionStatusIcon;
+    private javax.swing.JButton ctsButton;
     private javax.swing.JMenuItem disconnectMenuItem;
+    private javax.swing.JButton dsrButton;
+    private javax.swing.JToggleButton dtrButton;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JLabel flowControlLabel;
     private javax.swing.JMenu infoMenu;
@@ -765,6 +848,7 @@ public class MainWindow extends JFrame {
     private javax.swing.JLabel portStatusLabel;
     private javax.swing.JScrollPane receivingScrollPane;
     private javax.swing.JTextPane receivingTextPane;
+    private javax.swing.JToggleButton rtsButton;
     private javax.swing.JButton sendButton;
     private javax.swing.JScrollPane sendingScrollPane;
     private javax.swing.JTextPane sendingTextPane;

@@ -4,6 +4,8 @@ import java.nio.charset.StandardCharsets;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import jssc.SerialPort;
 import jssc.SerialPortEvent;
@@ -20,7 +22,7 @@ import pl.polsl.pl.java.serial.terminal.main.Controler;
  * @see SerialPortEventListener
  * @author Michał Lytek
  */
-public class CustomSerialPortEventListener implements SerialPortEventListener {
+public class SerialPortReader implements SerialPortEventListener {
     
     /** Instance of connected SerialPort to read from */
     private SerialPort serialPort;
@@ -44,7 +46,7 @@ public class CustomSerialPortEventListener implements SerialPortEventListener {
      * @param terminator the termination string
      * @param controler the instance of MVC controler to inform about received chars
      */
-    public CustomSerialPortEventListener(SerialPort serialPort, String terminator, Controler controler) {
+    public SerialPortReader(SerialPort serialPort, String terminator, Controler controler) {
         this.serialPort = serialPort;
         this.terminatorToInsert = terminator;
         this.controler = controler;
@@ -119,6 +121,18 @@ public class CustomSerialPortEventListener implements SerialPortEventListener {
             } catch (SerialPortException ex) {
                 System.err.println(ex);
             }
+        }
+        
+        if (serialPortEvent.isCTS()) {
+            boolean ctsState = (serialPortEvent.getEventValue() == 1);
+            controler.showCTS(ctsState);
+            System.err.println("CTS");
+        }
+        
+        if (serialPortEvent.isDSR()) {
+            boolean dsrState = (serialPortEvent.getEventValue() == 1);
+            controler.showDSR(dsrState);
+            System.err.println("DSR");
         }
     }
     

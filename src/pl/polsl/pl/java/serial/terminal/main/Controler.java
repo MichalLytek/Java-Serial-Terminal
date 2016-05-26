@@ -4,12 +4,14 @@ import java.nio.charset.StandardCharsets;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import jssc.SerialPort;
 import jssc.SerialPortException;
 import jssc.SerialPortList;
 
-import pl.polsl.pl.java.serial.terminal.model.CustomSerialPortEventListener;
+import pl.polsl.pl.java.serial.terminal.model.SerialPortReader;
 import pl.polsl.pl.java.serial.terminal.view.MainWindow;
 
 /**
@@ -38,7 +40,8 @@ public class Controler {
             signBits,
             stopBits,
             parity,
-            flowControlMask;
+            flowControlMask,
+            eventMask;
     private String signFormat;
     private String serialPortName;
 
@@ -92,6 +95,7 @@ public class Controler {
         }
         this.signFormat += Integer.toString(stopBits);
 
+        this.eventMask = SerialPort.MASK_RXCHAR;
         // parse flow control settings to the serial port mask
         switch (flowControl) {
             case 0:
@@ -99,6 +103,7 @@ public class Controler {
                 break;
             case 1:
                 this.flowControlMask = SerialPort.FLOWCONTROL_RTSCTS_IN | SerialPort.FLOWCONTROL_RTSCTS_OUT;
+                this.eventMask |= SerialPort.MASK_DSR | SerialPort.MASK_CTS;
                 break;
             case 2:
                 this.flowControlMask = SerialPort.FLOWCONTROL_XONXOFF_IN | SerialPort.FLOWCONTROL_XONXOFF_OUT;
@@ -138,9 +143,10 @@ public class Controler {
         try {
             this.serialPort = new SerialPort(this.serialPortName);
             this.serialPort.openPort();
-            this.serialPort.setParams(this.baudRate, this.signBits, this.stopBits, this.parity);
+            this.serialPort.setParams(this.baudRate, this.signBits, this.stopBits, this.parity, true, true);//, false, false);
             this.serialPort.setFlowControlMode(this.flowControlMask);
-            this.serialPort.addEventListener(new CustomSerialPortEventListener(serialPort, terminatorToInsert, this));
+            //this.serialPort.setEventsMask(this.eventMask);
+            this.serialPort.addEventListener(new SerialPortReader(serialPort, terminatorToInsert, this), this.eventMask);
         } catch (SerialPortException ex) {
             System.err.println(ex);
             return false;
@@ -197,6 +203,49 @@ public class Controler {
         this.pingResult = difference.intValue();
         view.showConnectionTestResults(true, pingResult);
     }
+    
+    public void setDTR(boolean dtrState) {
+        try {
+            serialPort.setDTR(dtrState);
+        } catch (SerialPortException ex) {
+            System.err.println(ex);
+        }
+//        view.setDSR(dtrState);
+    }
+    
+    public void setRTS(boolean rtsState) {
+        try {
+            serialPort.setRTS(rtsState);
+        } catch (SerialPortException ex) {
+            System.err.println(ex);
+        }
+//        view.setCTS(rtsState);
+    }
+   
+    public void showDSR(boolean dsrState) {
+        view.setDSR(dsrState);
+    }
+    
+    public void showCTS(boolean ctsState) {
+        view.setCTS(ctsState);
+    }
+    
+    public void showDSR() {
+        try {
+            view.setDSR(serialPort.isDSR());
+        } catch (SerialPortException ex) {
+            System.err.println(ex);
+        }
+    }
+    
+    public void showCTS() {
+        try {
+            view.setCTS(serialPort.isCTS());
+        } catch (SerialPortException ex) {
+            System.err.println(ex);
+        }
+    }
+    
     
     /**
      * Split received text to lines and send each one by serial interface,
